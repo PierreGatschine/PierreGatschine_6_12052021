@@ -1,4 +1,5 @@
 /** @format */
+require("dotenv").config();
 
 const mongoose = require("mongoose");
 
@@ -7,7 +8,6 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err) => {
     if (!err) console.log("Mongodb connected !");
-    else console.log(`Connection error: ${err}`);
+    else console.log("Connection error: " + err);
   }
-);
-
+); 

@@ -1,25 +1,65 @@
 /** @format */
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const emailValidator = require("email-validator");
+const passwordValidator = require("password-validator");
+
 const User = require("../models/User");
 
+
+
+var schema = new passwordValidator();
+
+schema
+  .is()
+  .min(8)
+  .is()
+  .max(30)
+  .has()
+  .uppercase()
+  .has()
+  .lowercase()
+  .has()
+  .digits()
+  .has()
+  .not()
+  .spaces();
+ 
+//Création d'un utilisateur
+
 exports.signup = (req, res, next) => {
-  bcrypt
-    .hash(req.body.password, 10)
-    .then((hash) => {
-      const user = new User({
-        email: req.body.email,
-        password: hash,
+  if (
+    !emailValidator.validate(req.body.email) ||
+    !schema.validate(req.body.password)
+  ) {
+    res
+      .status(401)
+      .json({
+        error:
+          "Merci de bien vouloir entrer une adresse email et un mot de passe valide (minimum 8 caractères avec au moins 1 Majuscule 1 chiffre et sans espace) !",
       });
-      user
-        .save()
-        .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        .catch((error) => res.status(400).json({ error }));
-    })
-    .catch((error) => res.status(500).json({ error }));
+  } else if (
+    emailValidator.validate(req.body.email) &&
+    schema.validate(req.body.password)
+  ) {
+    bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => {
+        const user = new User({
+          email: req.body.email,
+          password: hash,
+        });
+        user
+          .save()
+          .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
+          .catch((error) => res.status(400).json({ error }));
+      })
+      .catch((error) => res.status(500).json({ error }));
+  }
 };
 
-exports.login = (req, res) => {
+//Connexion d'un utilisateur déjà inscrit
+exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
@@ -42,4 +82,4 @@ exports.login = (req, res) => {
         .catch((error) => res.status(500).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
-};
+}; 

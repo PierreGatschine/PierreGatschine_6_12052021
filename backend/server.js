@@ -4,7 +4,6 @@ const http = require("http");
 const app = require("./app");
 
 const normalizePort = (val) => {
-  // returns a valid port
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -19,7 +18,6 @@ const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
 const errorHandler = (error) => {
-  // looking for differents errors to manage them appropriately
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -49,4 +47,4 @@ server.on("listening", () => {
   console.log("Listening on " + bind);
 });
 
-server.listen(port); // server is listening to default port or port 3000
+server.listen(port);
