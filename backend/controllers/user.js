@@ -6,10 +6,9 @@ const passwordValidator = require("password-validator");
 
 const User = require("../models/User");
 
-
-
 var schema = new passwordValidator();
 
+// Password verification
 schema
   .is()
   .min(8)
@@ -25,20 +24,19 @@ schema
   .not()
   .spaces();
  
-//Création d'un utilisateur
 
 exports.signup = (req, res, next) => {
+  //if the result is not expected
   if (
     !emailValidator.validate(req.body.email) ||
     !schema.validate(req.body.password)
   ) {
-    res
-      .status(401)
-      .json({
-        error:
-          "Merci de bien vouloir entrer une adresse email et un mot de passe valide (minimum 8 caractères avec au moins 1 Majuscule 1 chiffre et sans espace) !",
-      });
+    res.status(401).json({
+      error:
+        "Entrer une adresse email et un mot de passe(minimum 8 caractères avec au moins 1 Majuscule 1 chiffre et sans espace) valide  !",
+    });
   } else if (
+    // if the result is ok, we hash the content
     emailValidator.validate(req.body.email) &&
     schema.validate(req.body.password)
   ) {
@@ -58,7 +56,7 @@ exports.signup = (req, res, next) => {
   }
 };
 
-//Connexion d'un utilisateur déjà inscrit
+
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
