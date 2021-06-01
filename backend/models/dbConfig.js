@@ -1,5 +1,5 @@
 /** @format */
-require("dotenv").config();
+require("dotenv").config(); // Load environment variables from an .env file into process.env
 
 const mongoose = require("mongoose");
 

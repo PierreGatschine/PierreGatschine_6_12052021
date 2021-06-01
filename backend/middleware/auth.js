@@ -1,6 +1,6 @@
 /** @format */
 
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken"); // An implementation of JSON Web Tokens
 
 module.exports = (req, res, next) => {
   try {

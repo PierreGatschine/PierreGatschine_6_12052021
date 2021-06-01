@@ -1,20 +1,22 @@
 /** @format */
-require("dotenv").config();
-
 const express = require("express");
-const bodyParser = require("body-parser");
-require("./models/dbConfig");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const helmet = require("helmet");
-const path = require("path");
+const bodyParser = require("body-parser"); // Analyze the body of incoming requests
+require("./models/dbConfig"); // 
+const mongoose = require("mongoose"); // Object modeling tool
+const helmet = require("helmet"); // secure HTTP header
+const path = require("path"); // exact copy of the "path" module of NodeJS
 
+// Routes
 const saucesRoutes = require("./routes/sauces");
 const userRoutes = require("./routes/user");
 
+// DB
 mongoose.set("useFindAndModify", false);
 
+// Application
 const app = express();
+
+// Middleware
 app.use(helmet());
 
 app.use((req, res, next) => {
@@ -30,14 +32,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
 app.use(bodyParser.json());
 
-
-/* app.use((req, res) => {
-  console.log(req.body);
-  res.json({ message: "Une nouvelle requête !" });
-});   */
 
 app.use("/images", express.static(path.join(__dirname, "images"))); 
 app.use("/api/auth", userRoutes);

@@ -1,8 +1,8 @@
 /** @format */
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt"); // A library to help you hash passwords
 const jwt = require("jsonwebtoken");
-const emailValidator = require("email-validator");
-const passwordValidator = require("password-validator");
+const emailValidator = require("email-validator"); // A simple module to validate an e-mail address
+const passwordValidator = require("password-validator"); // A simple module to validate an password
 
 const User = require("../models/User");
 
@@ -22,9 +22,9 @@ schema
   .digits()
   .has()
   .not()
-  .spaces();
+  .spaces()
+  .is().not().oneOf(['Passw0rd', 'Password123']);
  
-
 exports.signup = (req, res, next) => {
   //if the result is not expected
   if (
