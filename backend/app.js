@@ -1,6 +1,6 @@
 /** @format */
 const express = require("express");
-const bodyParser = require("body-parser"); // Analyze the body of incoming requests
+//const bodyParser = require("body-parser"); // Analyze the body of incoming requests
 require("./models/dbConfig"); // 
 const mongoose = require("mongoose"); // Object modeling tool
 const helmet = require("helmet"); // secure HTTP header
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 app.use("/images", express.static(path.join(__dirname, "images"))); 

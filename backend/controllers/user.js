@@ -1,4 +1,6 @@
 /** @format */
+require("dotenv").config(); // Load environment variables from an .env file into process.env
+
 const bcrypt = require("bcrypt"); // A library to help you hash passwords
 const jwt = require("jsonwebtoken");
 const emailValidator = require("email-validator"); // A simple module to validate an e-mail address
@@ -6,7 +8,8 @@ const passwordValidator = require("password-validator"); // A simple module to v
 
 const User = require("../models/User");
 
-var schema = new passwordValidator();
+const schema = new passwordValidator();
+const tokenRandom = process.env.TOKEN_RANDOM;
 
 // Password verification
 schema
@@ -72,7 +75,7 @@ exports.login = (req, res, next) => {
           res.status(201).json({
             message: "Connexion réussie!",
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+            token: jwt.sign({ userId: user._id }, tokenRandom, {
               expiresIn: "24h",
             }),
           });
